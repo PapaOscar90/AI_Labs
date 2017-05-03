@@ -37,7 +37,7 @@ void search(int mode, int start, int goal) {
       goalReached = 1;
       break;
     }
-    /* insert neighbouring states */
+    /* insert neighbouring states */ // TODO: Change to DFS style, go deep before shallow for better memory use
     fringe = insertValidSucc(fringe, value+1); /* rule n->n + 1      */
     fringe = insertValidSucc(fringe, 2*value); /* rule n->2*n        */
     fringe = insertValidSucc(fringe, 3*value); /* rule n->3*n        */
