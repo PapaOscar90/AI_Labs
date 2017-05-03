@@ -1,0 +1,19 @@
+1.
+FIFO (BFS)
+0->99  == 28091 nodes visited. 126169 nodes still in the queue.
+
+0->100 == insertFringe(..): fatal error, out of memory.
+
+0->102 == 29325 nodes visited. 132124 nodes still in the queue.
+
+
+STACK (DFS)
+0->99  == insertFringe(..): fatal error, out of memory.
+
+0->100 == insertFringe(..): fatal error, out of memory.
+
+0->102 == insertFringe(..): fatal error, out of memory.
+
+1->0   == 2 nodes visited. 5 nodes still in the queue.
+
+2.
