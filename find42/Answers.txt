@@ -25,22 +25,21 @@ In both the FIFO and the STACK, these issues may be resolved by keeping
 track of visited nodes and only feeding the fringe if the node is 
 unvisited.
 
-2. Using a list of visited nodes, the DFS search stopped looping 
-and started finding values very effectivly, from 0 up to >10,000. BFS
-also improved a lot but its memory requirements become obvious past 1000,
-where it starts becoming noticably slow. 
+2. By keeping track of visited nodes, the FIFO improves drastically. But
+because of the properties of LIFO, a lot of values still loop indefinitely.
+  
 
 FIFO (BFS)
-0->99  == 562 nodes visited. 1103 nodes still in the queue.
+0->99  == 87 nodes visited. 95 nodes still in the queue.
 
-0->100 == 1500 nodes visited. 2891 nodes still in the queue.
+0->100 == 155 nodes visited. 169 nodes still in the queue.
 
-0->102 == 656 nodes visited. 1293 nodes still in the queue.
+0->102 == 105 nodes visited. 114 nodes still in the queue.
 
 
 STACK (DFS)
 
-1->0   == 2 nodes visited. 5 nodes still in the queue.
+1->0   == 2 nodes visited. 2 nodes still in the queue.
 
 0->1   == 2 nodes visited. 0 nodes still in the queue.
 

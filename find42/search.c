@@ -18,14 +18,15 @@ int find(int *array, int size, int element){
 	return 0;
 }
 
-Fringe insertValidSucc(Fringe fringe, int value, int **visitedList, int visited) {
+Fringe insertValidSucc(Fringe fringe, int value, int **visitedList, int *visited) {
   State s;
-  if ((value < 0) || (value > RANGE) || find(*visitedList, visited, value)) {
+  if ((value < 0) || (value > RANGE) || find(*visitedList, *visited, value)) {
     /* ignore states that are out of bounds, or
      * are already visited */
     return fringe;
   }
-  (*visitedList)[visited] = value;
+  (*visitedList)[(*visited)] = value;
+  (*visited)++;
   s.value = value;
   return insertFringe(fringe, s);
 }
@@ -35,30 +36,30 @@ void search(int mode, int start, int goal) {
   State state;
   int goalReached = 0;
   int visited = 0;
+  int visitedListSize = 0;
   int *visitedList = malloc(MAXV*sizeof(int));
   int value;
 
   fringe = makeFringe(mode);
   state.value = start;
-  fringe = insertFringe(fringe, state, &visitedList, visited);
+  fringe = insertValidSucc(fringe, state.value, &visitedList, &visitedListSize);
   while (!isEmptyFringe(fringe)) {
     /* get a state from the fringe */
     fringe = removeFringe(fringe, &state);
     /* is state the goal? */
     value = state.value;
-    visitedList[visited] = value;
     visited++;
     if (value == goal) {
       goalReached = 1;
       break;
     }
     /* insert neighbouring states */
-    fringe = insertValidSucc(fringe, value+1, &visitedList, visited); /* rule n->n + 1      */
-    fringe = insertValidSucc(fringe, 2*value, &visitedList, visited); /* rule n->2*n        */
-    fringe = insertValidSucc(fringe, 3*value, &visitedList, visited); /* rule n->3*n        */
-    fringe = insertValidSucc(fringe, value-1, &visitedList, visited); /* rule n->n - 1      */
-    fringe = insertValidSucc(fringe, value/2, &visitedList, visited); /* rule n->floor(n/2) */
-    fringe = insertValidSucc(fringe, value/3, &visitedList, visited); /* rule n->floor(n/3) */
+    fringe = insertValidSucc(fringe, value+1, &visitedList, &visitedListSize); /* rule n->n + 1      */
+    fringe = insertValidSucc(fringe, 2*value, &visitedList, &visitedListSize); /* rule n->2*n        */
+    fringe = insertValidSucc(fringe, 3*value, &visitedList, &visitedListSize); /* rule n->3*n        */
+    fringe = insertValidSucc(fringe, value-1, &visitedList, &visitedListSize); /* rule n->n - 1      */
+    fringe = insertValidSucc(fringe, value/2, &visitedList, &visitedListSize); /* rule n->floor(n/2) */
+    fringe = insertValidSucc(fringe, value/3, &visitedList, &visitedListSize); /* rule n->floor(n/3) */
   }
   if (goalReached == 0) {
     printf("goal not reachable ");
