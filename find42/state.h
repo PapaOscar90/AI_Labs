@@ -10,6 +10,7 @@
 
 typedef struct {
   int value;
+  int prevValue;
 } State;
 
 #endif
