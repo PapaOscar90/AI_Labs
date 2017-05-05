@@ -10,17 +10,24 @@ int actions[8][2] = {  /* knight moves */
 int costShortestPath[N][N];
 unsigned long statesVisited = 0;
 
-void doubleQSize(struct Queue q);
-
-typedef struct position{
+typedef struct node{
     int x,y;
-    int visited;
-    struct position *camefrom;
+    int state;
+    struct node *camefrom;
     int costRemaining;
-}position;
+}node;
+
+node createNode(int x, int y, int state, struct node *cameFrom){
+    node n;
+    n.x=x;
+    n.y=y;
+    n.state=0;
+    n.camefrom=cameFrom;
+    n.costRemaining=0;
+}
 
 typedef struct Queue{
-    position *array;
+    node *array;
     int back;
     int front;
     int size;
@@ -28,15 +35,21 @@ typedef struct Queue{
 
 Queue newQueue(int s){
     Queue q;
-    q.array=malloc(s*sizeof(position));
+    q.array=malloc(s*sizeof(node));
     assert(q.array != NULL);
     q.back = 0;
     q.front = 0;
     q.size = s;
-    return
+    return q;
 }
 
-void enqueue(Queue q, position p){
+void doubleQSize(Queue q) {
+    q.array=realloc((q.size*2), sizeof(node));
+    assert(q.array != NULL);
+    q.size *=2;
+}
+
+void enqueue(Queue q, node p){
     q.back +=1;
     if(q.back >= q.size){
         doubleQSize(q);
@@ -45,34 +58,32 @@ void enqueue(Queue q, position p){
     q.size++;
 }
 
-position dequeue(Queue q){
+node dequeue(Queue q){
     q.front += 1;
     q.size--;
     return q.array[q.front-1];
 }
 
-position dequeueLeast(Queue q){
-    int min=99999999;
-    int minIndex;
+node dequeueLeast(Queue q){
+    int minCost=99999999;
+    int minIndex = 0;
     for(int i = 0; i<q.size; i++){
-        if(q.array[i]<min){
+        if(q.array[i].costRemaining < minCost){
             minIndex = i;
-            min = q.array[i];
+            minCost = q.array[i].costRemaining;
         }
     }
-    position returnPosition = q.array[minIndex];
+    node returnPosition = q.array[minIndex];
 
     for (int i = minIndex+1; i<q.size; i++){
-        i>0 ? (q.array[i - 1] = q.array[i]) : (q.array[q.front] += 1);
+        if (i>0){
+            (q.array[i - 1] = q.array[i]);
+        }else {
+            (q.front += 1);
+        }
     }
     q.size--;
     return returnPosition;
-}
-
-void doubleQSize(Queue q) {
-    q.array=realloc((q.size*2), sizeof(position));
-    assert(q.array != NULL);
-    q.size *=2;
 }
 
 int isValidLocation(int x, int y) {
@@ -122,19 +133,19 @@ int knightIDS(int row, int column, int rowGoal, int columnGoal) {
   return limit;
 }
 
-int aStar(int row, int column, int rowGoal, int columnGoal, int goalDistance){
+int aStar(int row, int column, int rowGoal, int columnGoal){
     Queue checkedList = newQueue(0);
     Queue toCheckList = newQueue(0);
-    position start;
+    node start;
     start.x = row;
     start.y = column;
     start.camefrom = NULL;
-    start.visited=0;
+    start.state=0;
     start.costRemaining = (rowGoal-row) + (columnGoal-column);
 
     enqueue(toCheckList, start);
-    position currentPosition;
-    position child;
+    node currentPosition;
+    node child;
     while (Queue.size >= 0) {
         if (Queue.size == 0){
             return 0;
@@ -143,20 +154,20 @@ int aStar(int row, int column, int rowGoal, int columnGoal, int goalDistance){
         if (currentPosition.x == rowGoal && currentPosition.y == columnGoal){
             printTheSolution(currentPosition);
         }
-        currentPosition.visited=1;
+        currentPosition.state=1;
         for(int i=0; i<8; i++){
             child.x = currentPosition.x + actions[i][0];
             child.y = currentPosition.y + actions[i][1];
-            if (isValidLocation(child.x, child.y) && child.visited==0){
+            if (isValidLocation(child.x, child.y) && child.state==0){
                 enqueue(toCheckList, child);
             }
         }
     }
-
 }
 
-void printTheSolution(position p){
-    while (p->camefrom != NULL){
+
+void printTheSolution(node p){
+    while (p.camefrom != NULL){
         printf("(%d,%d)-> ", p.x, p.y);
     }
     printf("Start");
@@ -173,7 +184,7 @@ int main(int argc, char *argv[]) {
     scanf("%d %d", &x1, &y1);
   } while (!isValidLocation(x1,y1));
 
-  printf("Length shortest path: %d\n", knightIDS(x0,y0, x1,y1));
+  printf("Length shortest path: %d\n", aStar(x0,y0, x1,y1));
   printf("#visited states: %lu\n", statesVisited);
   return 0;
 }
