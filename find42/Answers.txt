@@ -25,8 +25,9 @@ In both the FIFO and the STACK, these issues may be resolved by keeping
 track of visited nodes and only feeding the fringe if the node is 
 unvisited.
 
-2. By keeping track of visited nodes, the FIFO improves drastically. But
-because of the properties of LIFO, a lot of values still loop indefinitely.
+2. By keeping track of visited nodes, the FIFO/BFS improves drastically. But
+because of the properties of DFS with a LIFO, a lot of values still loop 
+indefinitely.
   
 
 FIFO (BFS)
@@ -43,7 +44,9 @@ STACK (DFS)
 
 0->1   == 2 nodes visited. 0 nodes still in the queue.
 
-3.
+3. Done.
+
+4.
 
 
 

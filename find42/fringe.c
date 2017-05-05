@@ -16,7 +16,8 @@ Fringe makeFringe(int mode) {
         exit(EXIT_FAILURE);
     }
     f.mode = mode;
-    f.size = f.front = f.rear = 0; /* front+rear only used in FIFO mode */
+    f.size = f.front = f.rear = 0; /* front+rear only used in FIFO mode */ 
+    f.head = 1; f.root = 1;  /* head+root only used in HEAP mode */
     f.states = malloc(MAXF * sizeof(State));
     if (f.states == NULL) {
         fprintf(stderr, "makeFringe(): memory allocation failed.\n");
@@ -42,12 +43,48 @@ int isEmptyFringe(Fringe fringe) {
     return (fringe.size == 0 ? 1 : 0);
 }
 
-/* Inserts s in the fringe, and returns the new fringe.
- * This function needs a third parameter in PRIO(HEAP) mode. */
-Fringe insertFringe(Fringe fringe, State s, ...) {
-    int priority;
-    va_list argument;
+// Upheap function for the fringe in HEAP mode
+void upHeap(Fringe *fringe, int index){
+	if (index == fringe->root){
+		return;
+	}
+	State current = fringe->states[index];
+	State parent = fringe->states[index/2];
+	if (current.cost < parent.cost){
+		fringe->states[index] = parent;
+		fringe->states[index/2] = current;
+	}
+	upHeap(fringe, index/2);
+}
 
+// Downheap function for the fringe in HEAP mode
+void downHeap(Fringe *fringe, int index){
+	if (index >= fringe->head){
+		return;
+	}
+	if (index*2 < fringe->head){
+		State current = fringe->states[index];
+		State left = fringe->states[index*2];
+		if (left.cost < current.cost){
+			fringe->states[index] = left;
+			fringe->states[index*2] = current;
+		}
+		downHeap(fringe, index*2);
+	}
+	if ((index*2 + 1) < fringe->head){
+		State current = fringe->states[index];
+		State right = fringe->states[index*2 + 1];
+		if (right.cost < current.cost){
+			fringe->states[index] = right;
+			fringe->states[index*2 + 1] = current;
+		}
+		downHeap(fringe, index*2 + 1);
+	}
+}
+
+/* Inserts s in the fringe, and returns the new fringe.
+*/
+Fringe insertFringe(Fringe fringe, State s) {
     if (fringe.size == MAXF) {
         fprintf(stderr, "insertFringe(..): fatal error, out of memory.\n");
         exit(EXIT_FAILURE);
@@ -66,15 +103,9 @@ Fringe insertFringe(Fringe fringe, State s, ...) {
             break;
         case PRIO: /* PRIO == HEAP */
         case HEAP:
-            /* Get the priority from the 3rd argument of this function.
-             * You are not supposed to understand the following 5 code lines.
-             */
-            va_start(argument, s);
-            priority = va_arg(argument, int);
-            printf("priority = %d ", priority);
-            va_end(argument);
-            printf("HEAP NOT IMPLEMENTED YET\n");
-            exit(EXIT_FAILURE);
+            fringe.states[fringe.head] = s;
+            upHeap(&fringe, fringe.head);
+            fringe.head++;
             break;
     }
     fringe.size++;
@@ -104,8 +135,10 @@ Fringe removeFringe(Fringe fringe, State *s) {
             break;
         case PRIO: /* PRIO == HEAP */
         case HEAP:
-            printf("HEAP NOT IMPLEMENTED YET\n");
-            exit(EXIT_FAILURE);
+            *s = fringe.states[fringe.root];
+            fringe.states[fringe.root] = fringe.states[fringe.head -1];
+            fringe.head--;
+            downHeap(&fringe, fringe.root);
             break;
     }
     return fringe;
