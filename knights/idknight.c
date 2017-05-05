@@ -24,6 +24,8 @@ node createNode(int x, int y, int state, struct node *cameFrom){
     n.state=0;
     n.camefrom=cameFrom;
     n.costRemaining=0;
+
+    return n;
 }
 
 typedef struct Queue{
@@ -99,15 +101,15 @@ void initialize() {
   }
 }
 
-
+/* This is old for testing purposes
 int knightDLS(int cost, int limit, int row, int column, int rowGoal, int columnGoal) {
   int act;
   statesVisited++;
   if (row == rowGoal && column == columnGoal) {
-    return 1;  /* goal reached */
+    return 1;  /* goal reached
   }
   if (cost == limit || cost >= costShortestPath[row][column]) {
-    return 0; /* limit reached, or we've been here before via a 'cheaper' path */
+    return 0; /* limit reached, or we've been here before via a 'cheaper' path
   }
   costShortestPath[row][column] = cost;
   for (act=0; act < 8; act++) {
@@ -132,6 +134,7 @@ int knightIDS(int row, int column, int rowGoal, int columnGoal) {
   printf("\n");
   return limit;
 }
+*/
 
 int aStar(int row, int column, int rowGoal, int columnGoal){
     Queue checkedList = newQueue(0);
