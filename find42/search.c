@@ -34,6 +34,19 @@ Fringe insertValidSucc(Fringe fringe, int value, State prevState, int cost, Stat
   return insertFringe(fringe, s);
 }
 
+Fringe insertValidSuccIDS(Fringe fringe, int value, State prevState, int cost) {
+  State s;
+  if ((value < 0) || (value > RANGE)) {
+    /* ignore states that are out of bounds*/
+    return fringe;
+  }
+  s.value = value;
+  s.prevValue = prevState.value;
+  s.cost = prevState.cost + cost;
+  s.length = prevState.length + 1;
+  return insertFringe(fringe, s);
+}
+
 void printFormattedPath(int length, int cost, int goal, int *path, int pathSize){
 	for (int i = pathSize-1; i >= 0; i--) {
 		printf("%d ", path[i]);
@@ -133,10 +146,71 @@ void search(int mode, int start, int goal) {
   free(visitedStates);
 }
 
+// An non-recursive iterative deepening search. The searching architecture set up 
+// can be used again instead of setting up a brand new recursive strategy as a 
+// separate program
+// Has the added benefit of being able to see fringe statistics!
+void IDS(int mode, int start, int goal) {
+	Fringe fringe;
+	State state;
+	int goalReached = 0;
+	int visited = 0;
+	int value;
+	int depth;
+	int maxDepth = 0;
+
+	fringe = makeFringe(mode);
+  
+    while (maxDepth < 13){ // takes around half a minute to reach this depth, after nearly a billion nodes visited
+		state.value = start;
+		state.prevValue = -1;
+		state.cost = 0;
+		state.length = -1;  //insertValidSucc increments this to 0 when it inserts this state
+		fringe = insertValidSuccIDS(fringe, state.value, state, 0);
+	    while (!isEmptyFringe(fringe)) {
+			/* get a state from the fringe */
+			fringe = removeFringe(fringe, &state);
+			/* is state the goal? */
+			value = state.value;
+			depth = state.length;
+			visited++;
+			if (value == goal) {
+			    goalReached = 1;
+			    break;
+			}
+			if (depth == maxDepth){
+				continue;
+			}
+			/* insert neighbouring states */
+			fringe = insertValidSuccIDS(fringe, value+1, state, 1); /* rule n->n + 1      */
+			fringe = insertValidSuccIDS(fringe, 2*value, state, 2); /* rule n->2*n        */
+			fringe = insertValidSuccIDS(fringe, 3*value, state, 2); /* rule n->3*n        */
+			fringe = insertValidSuccIDS(fringe, value-1, state, 1); /* rule n->n - 1      */
+			fringe = insertValidSuccIDS(fringe, value/2, state, 3); /* rule n->floor(n/2) */
+			fringe = insertValidSuccIDS(fringe, value/3, state, 3); /* rule n->floor(n/3) */
+	    }
+		if (goalReached == 0) {
+			//printf("goal not reached at maxDepth %d\n ", maxDepth);
+			maxDepth++;
+		} else {
+			printf("goal reached \n");
+			printf("length = %d, cost = %d\n", state.length, state.cost);
+			break;
+		}
+	}
+	if (goalReached == 0){
+		printf("goal not reached \n");
+	}
+	printf("(%d nodes visited)\n", visited);
+	showStats(fringe);
+	deallocFringe(fringe);
+}
+
 int main(int argc, char *argv[]) {
   int start, goal, fringetype;
+  int isIDS = 0;
   if ((argc == 1) || (argc > 4)) {
-    fprintf(stderr, "Usage: %s <STACK|FIFO|HEAP> [start] [goal]\n", argv[0]);
+    fprintf(stderr, "Usage: %s <STACK|FIFO|HEAP|IDS> [start] [goal]\n", argv[0]);
     return EXIT_FAILURE;
   }
   fringetype = 0;
@@ -147,9 +221,12 @@ int main(int argc, char *argv[]) {
     fringetype = FIFO;
   } else if ((strcmp(argv[1], "HEAP") == 0) || (strcmp(argv[1], "PRIO") == 0)) {
     fringetype = HEAP;
+  } else if (strcmp(argv[1], "IDS") == 0){
+	fringetype = STACK;
+	isIDS = 1;
   }
   if (fringetype == 0) {
-    fprintf(stderr, "Usage: %s <STACK|FIFO|HEAP> [start] [goal]\n", argv[0]);
+    fprintf(stderr, "Usage: %s <STACK|FIFO|HEAP|IDS> [start] [goal]\n", argv[0]);
     return EXIT_FAILURE;
   }
 
@@ -163,6 +240,10 @@ int main(int argc, char *argv[]) {
   }
 
   printf("Problem: route from %d to %d\n", start, goal);
-  search(fringetype, start, goal); 
+  if (isIDS){
+	IDS(fringetype, start, goal);
+  } else {
+	search(fringetype, start, goal);
+  }
   return EXIT_SUCCESS;
 }

@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "fringe.h"
-
+ 
 /* Returns an empty fringe.
  * The mode can be LIFO(=STACK), FIFO, or PRIO(=HEAP) */
 Fringe makeFringe(int mode) {
