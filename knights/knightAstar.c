@@ -21,7 +21,7 @@ typedef struct Tile{
 }Tile;
 
 // Creates a new node with the passed in arguments and returns it
-Tile createNewNode(int x, int y, int state, Tile cameFrom, int remainingDistance, int startCost){
+Tile createNewTile(int x, int y, int state, Tile cameFrom, int remainingDistance, int startCost){
     Tile n;
     n.x=x;
     n.y=y;
@@ -65,7 +65,12 @@ List addSorted(Tile position, List li){
     return startOfOldList;
 }
 
+Tile popSmallest(List li){
+    Tile returnPosition = li->currentPosition;
+    li = li->next;
 
+    return returnPosition;
+}
 
 int main(int argc, char* argv[]){
     printf("Hello world.");
