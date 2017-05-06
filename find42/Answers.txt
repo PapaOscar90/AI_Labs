@@ -25,26 +25,185 @@ In both the FIFO and the STACK, these issues may be resolved by keeping
 track of visited nodes and only feeding the fringe if the node is 
 unvisited.
 
-2. Using a list of visited nodes, the DFS search stopped looping 
-and started finding values very effectivly, from 0 up to >10,000. BFS
-also improved a lot but its memory requirements become obvious past 1000,
-where it starts becoming noticably slow. 
+2. By keeping track of visited nodes, the FIFO/BFS improves drastically. But
+because of the properties of DFS with a LIFO, a lot of values still loop 
+indefinitely.
+  
 
 FIFO (BFS)
-0->99  == 562 nodes visited. 1103 nodes still in the queue.
+0->99  == 87 nodes visited. 95 nodes still in the queue.
 
-0->100 == 1500 nodes visited. 2891 nodes still in the queue.
+0->100 == 155 nodes visited. 169 nodes still in the queue.
 
-0->102 == 656 nodes visited. 1293 nodes still in the queue.
+0->102 == 105 nodes visited. 114 nodes still in the queue.
 
 
 STACK (DFS)
 
-1->0   == 2 nodes visited. 5 nodes still in the queue.
+1->0   == 2 nodes visited. 2 nodes still in the queue.
 
 0->1   == 2 nodes visited. 0 nodes still in the queue.
 
-3.
+3. Done.
+
+blehbleh output results:
+
+LIFO
+Problem: route from 0 to 353
+goal reached 
+(path too long to include)
+length = 415, cost = 909
+(423 nodes visited)
+#### fringe statistics:
+ #size        :     872
+ #maximum size:     873
+ #insertions  :    1295
+ #deletions   :     423
+####
+
+FIFO
+Problem: route from 0 to 353
+goal reached 
+0 (+1)-> 1 (+1)-> 2 (*2)-> 4 (*3)-> 12 (+1)-> 13 (*3)-> 39 (*3)-> 117 (+1)-> 118 (*3)-> 354 (-1)-> 353 
+length = 10, cost = 15
+(732 nodes visited)
+#### fringe statistics:
+ #size        :     817
+ #maximum size:     818
+ #insertions  :    1549
+ #deletions   :     732
+####
+
+HEAP
+Problem: route from 0 to 353
+goal reached 
+0 (+1)-> 1 (+1)-> 2 (*3)-> 6 (*2)-> 12 (+1)-> 13 (*3)-> 39 (*3)-> 117 (+1)-> 118 (*3)-> 354 (-1)-> 353 
+length = 10, cost = 15
+(494 nodes visited)
+#### fringe statistics:
+ #size        :     549
+ #maximum size:     550
+ #insertions  :    1043
+ #deletions   :     494
+####
+
+IDS 
+Problem: route from 0 to 353
+goal reached 
+length = 10, cost = 18
+(26177485 nodes visited)
+#### fringe statistics:
+ #size        :      16
+ #maximum size:      41
+ #insertions  : 26177501
+ #deletions   : 26177485
+####
+
+LIFO
+Problem: route from 0 to 3455
+goal reached
+(path too long to print)
+length = 2699, cost = 5920
+(2733 nodes visited)
+#### fringe statistics:
+ #size        :    5818
+ #maximum size:    5819
+ #insertions  :    8551
+ #deletions   :    2733
+####
+
+FIFO
+Problem: route from 0 to 3455
+goal reached 
+0 (+1)-> 1 (+1)-> 2 (*2)-> 4 (*2)-> 8 (*2)-> 16 (*2)-> 32 (*2)-> 64 (*2)-> 128 (*3)-> 384 (*3)-> 1152 (*3)-> 3456 (-1)-> 3455 
+length = 12, cost = 21
+(2875 nodes visited)
+#### fringe statistics:
+ #size        :    3250
+ #maximum size:    3251
+ #insertions  :    6125
+ #deletions   :    2875
+####
+
+HEAP
+Problem: route from 0 to 3455
+goal reached 
+0 (+1)-> 1 (+1)-> 2 (*3)-> 6 (+1)-> 7 (*3)-> 21 (*3)-> 63 (+1)-> 64 (*3)-> 192 (*3)-> 576 (*2)-> 1152 (*3)-> 3456 (-1)-> 3455 
+length = 12, cost = 19
+(2401 nodes visited)
+#### fringe statistics:
+ #size        :    2727
+ #maximum size:    2728
+ #insertions  :    5128
+ #deletions   :    2401
+####
+
+IDS
+Problem: route from 0 to 3455
+goal reached 
+length = 12, cost = 21
+(814312481 nodes visited)
+#### fringe statistics:
+ #size        :      20
+ #maximum size:      49
+ #insertions  : 814312501
+ #deletions   : 814312481
+####
+
+LIFO
+Problem: route from 0 to 35435
+goal reached
+(path too long to print)
+length = 18160, cost = 40104
+(18379 nodes visited)
+#### fringe statistics:
+ #size        :   38839
+ #maximum size:   38840
+ #insertions  :   57218
+ #deletions   :   18379
+####
+
+FIFO
+Problem: route from 0 to 35435
+goal reached 
+0 (+1)-> 1 (*3)-> 3 (*3)-> 9 (*3)-> 27 (*3)-> 81 (+1)-> 82 (*2)-> 164 (*2)-> 328 (*3)-> 984 (*3)-> 2952 (+1)-> 2953 (*2)-> 5906 (*2)-> 11812 (*3)-> 35436 (-1)-> 35435 
+length = 15, cost = 26
+(49605 nodes visited)
+#### fringe statistics:
+ #size        :   55758
+ #maximum size:   55759
+ #insertions  :  105363
+ #deletions   :   49605
+####
+
+HEAP
+Problem: route from 0 to 35435
+goal reached 
+0 (+1)-> 1 (*3)-> 3 (*3)-> 9 (*3)-> 27 (*3)-> 81 (+1)-> 82 (*2)-> 164 (*2)-> 328 (*3)-> 984 (*3)-> 2952 (+1)-> 2953 (*2)-> 5906 (*3)-> 17718 (*2)-> 35436 (-1)-> 35435 
+length = 15, cost = 26
+(49322 nodes visited)
+#### fringe statistics:
+ #size        :   55754
+ #maximum size:   55755
+ #insertions  :  105076
+ #deletions   :   49322
+####
+
+IDS
+Problem: route from 0 to 35435
+goal not reached 
+(936181422 nodes visited)
+#### fringe statistics:
+ #size        :       0
+ #maximum size:      49
+ #insertions  : 936181422
+ #deletions   : 936181422
+####
+
+
+
+
+
 
 
 

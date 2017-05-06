@@ -17,6 +17,8 @@ typedef struct Fringe {
   int size;      /* number of elements in the fringe                 */
   int front;     /* index of first element in the fringe (FIFO mode) */
   int rear;      /* index of last element in the fringe (FIFO mode)  */
+  int head;      /* index of last element of the fringe (HEAP mode)  */
+  int root;      /* index of first element in the fringe (HEAP mode) */
   State *states; /* fringe data (states)                             */
   int insertCnt; /* counts the number of insertions                  */
   int deleteCnt; /* counts the number of removals (deletions)        */
@@ -38,9 +40,8 @@ int getFringeSize(Fringe fringe);
 int isEmptyFringe(Fringe fringe);
 /* Returns 1 if the fringe is empty, otherwise 0 */
 
-Fringe insertFringe(Fringe fringe, State s, ...);
+Fringe insertFringe(Fringe fringe, State s);
 /* Inserts s in the fringe, and returns the new fringe.
- * This function needs a third parameter in PRIO(HEAP) mode.
  */
 
 Fringe removeFringe(Fringe fringe, State *s);
