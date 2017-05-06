@@ -98,7 +98,7 @@ Fringe insertFringe(Fringe fringe, State s) {
             fringe.states[fringe.size] = s;
             break;
         case FIFO:
-            fringe.states[fringe.rear++] = s;  // TODO: Analyze this, seems weird for some reason
+            fringe.states[fringe.rear++] = s;
             fringe.rear %= MAXF;
             break;
         case PRIO: /* PRIO == HEAP */

@@ -7,6 +7,8 @@
 
 #define RANGE 1000000
 #define MAXV 500000 // Max Visited List size
+#define MAXPATH 100000 //Max size of path list
+#define IDS_DEPTH_LIMIT 12 //The maximum depth the IDS will calculate to. Takes around half a minute at worst in this depth. 
 
 
 int find(State *array, int size, int element){
@@ -80,28 +82,24 @@ void printFormattedPath(int length, int cost, int goal, int *path, int pathSize)
 // An algorithm to find a path, using the state's current value, previous
 // value, and the visited states, then prints the path
 void makePath(int start, State state, State *visitedStates, int visitedStatesSize) {
-	int path[10000];
+	int *path = malloc(MAXPATH*sizeof(int));
 	int pathSize = 0;
-	int current = state.value;
 	int goal = state.value;
 	int length = state.length;
 	int cost = state.cost;
 	path[0] = state.value;
 	pathSize++;
-	while (current != start) {
-		for (int i = visitedStatesSize - 1; i > 0; i--) {
-			if (visitedStates[i].value == state.prevValue) {
-				path[pathSize] = state.prevValue;
-				state = visitedStates[i];
-				pathSize++;
-			}
+	for (int i = visitedStatesSize - 1; i > 0; i--) {
+		if (visitedStates[i].value == state.prevValue) {
+			path[pathSize] = state.prevValue;
+			state = visitedStates[i];
+			pathSize++;
 		}
-		current = state.value;
-		break;
 	}
 	path[pathSize] = start;
 	pathSize++;
 	printFormattedPath(length, cost, goal, path, pathSize);
+	free(path);
 }
 
 void search(int mode, int start, int goal) {
@@ -164,7 +162,7 @@ void IDS(int mode, int start, int goal) {
 
 	fringe = makeFringe(mode);
   
-    while (maxDepth < 13){ // takes around half a minute to reach this depth, after nearly a billion nodes visited
+    while (maxDepth <= IDS_DEPTH_LIMIT){ // takes around half a minute to reach this depth, after nearly a billion nodes visited
 		state.value = start;
 		state.prevValue = -1;
 		state.cost = 0;
