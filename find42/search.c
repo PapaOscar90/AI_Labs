@@ -34,6 +34,7 @@ Fringe insertValidSucc(Fringe fringe, int value, State prevState, int cost, Stat
   return insertFringe(fringe, s);
 }
 
+// Same as the normal insertValidSucc, but without recording the visited states.
 Fringe insertValidSuccIDS(Fringe fringe, int value, State prevState, int cost) {
   State s;
   if ((value < 0) || (value > RANGE)) {
@@ -47,6 +48,7 @@ Fringe insertValidSuccIDS(Fringe fringe, int value, State prevState, int cost) {
   return insertFringe(fringe, s);
 }
 
+// Prints a formatted path from the start to the goal, in the console. 
 void printFormattedPath(int length, int cost, int goal, int *path, int pathSize){
 	for (int i = pathSize-1; i >= 0; i--) {
 		printf("%d ", path[i]);
@@ -74,6 +76,7 @@ void printFormattedPath(int length, int cost, int goal, int *path, int pathSize)
 	printf("\n");
 	printf("length = %d, cost = %d\n", length, cost);
 }
+
 // An algorithm to find a path, using the state's current value, previous
 // value, and the visited states, then prints the path
 void makePath(int start, State state, State *visitedStates, int visitedStatesSize) {
