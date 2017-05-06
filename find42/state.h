@@ -9,10 +9,10 @@
  */
 
 typedef struct {
-  int value;
-  int prevValue;
-  int cost;
-  int length;
+    int value;
+    int prevValue;
+    int cost;
+    int length;
 } State;
 
 #endif
