@@ -14,7 +14,8 @@
 
 int nqueens;      /* number of queens: global variable */
 int queens[MAXQ]; /* queen at (r,c) is represented by queens[r] == c */
-int queenBoard[MAXQ][MAXQ];
+int queenPopulation[MAXQ][MAXQ];
+int newQueenPopulation[MAXQ][MAXQ];
 int fitnessOfPop[MAXQ];
 
 void initializeRandomGenerator() {
@@ -39,8 +40,8 @@ void initiateQueens(int flag) {
 void initiatePopulation(int pop){
     for (int i = 0; i<pop; i++){
         for (int j = 0; j<nqueens; j++){
-            queenBoard[i][j]=rand() % nqueens;
-            printf("%d, ", queenBoard[i][j]);
+            queenPopulation[i][j]=rand() % nqueens;
+            printf("%d, ", queenPopulation[i][j]);
         }
         printf("\n");
     }
@@ -150,7 +151,7 @@ int countConflictsInChrome(int chrome) {
     int queen, other;
     for (queen = 0; queen < nqueens; queen++) {
         for (other = queen + 1; other < nqueens; other++) {
-            if (inConflict(queen, queenBoard[chrome][queen], other, queenBoard[chrome][other])) {
+            if (inConflict(queen, queenPopulation[chrome][queen], other, queenPopulation[chrome][other])) {
                 cnt++;
             }
         }
@@ -218,11 +219,49 @@ void updateFitness(int pop){
     }
 }
 
+int isFound(int sizeOfPop){
+    int isFound=0, index=0;
+    for(int i=0; i<sizeOfPop; i++){
+        if(fitnessOfPop[i]==0){
+            isFound=1;
+            index=i;
+        }
+    }
+
+    if (isFound==1){
+        for(int i=0; i<nqueens; i++){
+            printf("%d, ", queenPopulation[index][i]);
+        }
+        printf("\nFOUND!");
+        return 1;
+    }
+
+    return 0;
+}
+
+void geneticAlgorithm(int sizeOfPop){
+    int X[nqueens];
+    int Y[nqueens];
+
+    for (int i=0; i<sizeOfPop; i++){
+
+    }
+}
+
 void geneticHelper() {
     // make an even population so everybody can mate
     int numPopulation = (nqueens/2 + nqueens%2)*5;
     initiatePopulation(numPopulation);
     updateFitness(numPopulation);
+    if(isFound(numPopulation) == 0){
+        geneticAlgorithm(numPopulation);
+    };
+}
+
+int* reproducePop(int* X, int* Y){
+    // TODO: pick random spot
+    // TODO: add before spot from X, after from Y
+    // TODO: return child
 }
 
 int main(int argc, char *argv[]) {
