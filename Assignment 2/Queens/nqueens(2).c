@@ -14,6 +14,8 @@
 
 int nqueens;      /* number of queens: global variable */
 int queens[MAXQ]; /* queen at (r,c) is represented by queens[r] == c */
+int queenBoard[MAXQ][MAXQ];
+int fitnessOfPop[MAXQ];
 
 void initializeRandomGenerator() {
     /* this routine initializes the random generator. You are not
@@ -32,6 +34,17 @@ void initiateQueens(int flag) {
     for (q = 0; q < nqueens; q++) {
         queens[q] = (flag == 0 ? 0 : rand() % nqueens);
     }
+}
+
+void initiatePopulation(int pop){
+    for (int i = 0; i<pop; i++){
+        for (int j = 0; j<nqueens; j++){
+            queenBoard[i][j]=rand() % nqueens;
+            printf("%d, ", queenBoard[i][j]);
+        }
+        printf("\n");
+    }
+
 }
 
 /* returns TRUE if position (row0,column0) is in 
@@ -132,6 +145,19 @@ int countConflicts() {
     return cnt;
 }
 
+int countConflictsInChrome(int chrome) {
+    int cnt = 0;
+    int queen, other;
+    for (queen = 0; queen < nqueens; queen++) {
+        for (other = queen + 1; other < nqueens; other++) {
+            if (inConflict(queen, queenBoard[chrome][queen], other, queenBoard[chrome][other])) {
+                cnt++;
+            }
+        }
+    }
+    return cnt;
+}
+
 /* evaluation function. The maximal number of queens in conflict
  * can be 1 + 2 + 3 + 4 + .. + (nquees-1)=(nqueens-1)*nqueens/2.
  * Since we want to do ascending local searches, the evaluation
@@ -185,8 +211,18 @@ void simulatedAnnealing() {
     printf("Implement the routine simulatedAnnealing() yourself!!\n");
 }
 
-void geneticAlgorithm() {
+void updateFitness(int pop){
+    for(int i=0; i<pop; i++){
+        fitnessOfPop[i]=countConflictsInChrome(i);
+        printf("Conflicts in %d: %d\n", i, fitnessOfPop[i]);
+    }
+}
 
+void geneticHelper() {
+    // make an even population so everybody can mate
+    int numPopulation = (nqueens/2 + nqueens%2)*5;
+    initiatePopulation(numPopulation);
+    updateFitness(numPopulation);
 }
 
 int main(int argc, char *argv[]) {
@@ -199,16 +235,16 @@ int main(int argc, char *argv[]) {
 
     do {
         printf("Algorithm: (1) Random search  (2) Hill climbing  ");
-        printf("(3) Simulated Annealing: ");
+        printf("(3) Simulated Annealing  (4) Genetic Algorithm: ");
         scanf("%d", &algorithm);
-    } while ((algorithm < 1) || (algorithm > 3));
+    } while ((algorithm < 1) || (algorithm > 4));
 
-    initializeRandomGenerator();
-
-    initiateQueens(1);
-
-    printf("\nInitial state:");
-    printState();
+    if (algorithm == 1) {
+        initializeRandomGenerator();
+        initiateQueens(1);
+        printf("\nInitial state:");
+        printState();
+    }
 
     switch (algorithm) {
         case 1:
@@ -221,7 +257,7 @@ int main(int argc, char *argv[]) {
             simulatedAnnealing();
             break;
         case 4:
-            geneticAlgorithm();
+            geneticHelper();
             break;
     }
 
