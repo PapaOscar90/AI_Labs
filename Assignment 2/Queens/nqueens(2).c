@@ -14,6 +14,8 @@
 
 int nqueens;      /* number of queens: global variable */
 int queens[MAXQ]; /* queen at (r,c) is represented by queens[r] == c */
+
+// TODO: FIX THE POPULATION, ISN"T CORRECT
 int queenPopulation[MAXQ][MAXQ];
 int newQueenPopulation[MAXQ][MAXQ];
 int fitnessOfPop[MAXQ];
@@ -41,9 +43,9 @@ void initiatePopulation(int pop){
     for (int i = 0; i<pop; i++){
         for (int j = 0; j<nqueens; j++){
             queenPopulation[i][j]=rand() % nqueens;
-            printf("%d, ", queenPopulation[i][j]);
+            //printf("%d, ", queenPopulation[i][j]);
         }
-        printf("\n");
+        //printf("\n");
     }
 
 }
@@ -215,7 +217,7 @@ void simulatedAnnealing() {
 void updateFitness(int pop){
     for(int i=0; i<pop; i++){
         fitnessOfPop[i]=countConflictsInChrome(i);
-        printf("Conflicts in %d: %d\n", i, fitnessOfPop[i]);
+        //printf("Conflicts in %d: %d\n", i, fitnessOfPop[i]);
     }
 }
 
@@ -239,11 +241,85 @@ int isFound(int sizeOfPop){
     return 0;
 }
 
+void printXY(int* X, int* Y){
+    printf("X, then Y:\n");
+    for (int j = 0; j<nqueens; j++){
+        printf("%d, ", X[j]);
+    }
+    printf("\n");
+    for (int j = 0; j<nqueens; j++){
+        printf("%d, ", Y[j]);
+    }
+    printf("\n");
+}
+void printNewPopulation(int sizeofpop){
+    for (int i=0; i<sizeofpop; i++){
+        for (int j=0; j<nqueens; j++) {
+            printf("%d,", queenPopulation[i][j]);
+        }
+        printf("\n");
+    }
+}
+void printPopulation(int sizeofpop){
+    for (int i=0; i<sizeofpop; i++){
+        for (int j=0; j<nqueens; j++) {
+            printf("%d,", queenPopulation[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void reproduce(int* X,int* Y, int popNumber){
+    int position = rand()%nqueens;
+    int child[nqueens];
+
+    for (int i=0; i<position; i++){
+        child[i] = X[i];
+    }
+
+    for (int i=position; i<nqueens; i++){
+        child[i] = Y[i];
+    }
+
+    for (int i=0; i<nqueens; i++) {
+        newQueenPopulation[popNumber][i] = child[i];
+    }
+
+}
+
+void updatePopulation(int sizeofpop){
+    printf("New Population:\n");
+    printNewPopulation(sizeofpop);
+    printf("\n");
+    for (int i=0; i<sizeofpop; i++){
+        for (int j=0; j<nqueens; j++) {
+            queenPopulation[j][i] = newQueenPopulation[j][i];
+            newQueenPopulation[j][i]=0;
+        }
+    }
+
+    printf("Queen Population Updated:\n");
+    printPopulation(sizeofpop);
+}
+
 void geneticAlgorithm(int sizeOfPop){
     int X[nqueens];
     int Y[nqueens];
 
     for (int i=0; i<sizeOfPop; i++){
+        int Xrand = rand()%sizeOfPop;
+        int Yrand = rand()%sizeOfPop;
+
+        for (int i = 0; i < nqueens; i++) {
+            X[i] = queenPopulation[Xrand][i];
+            Y[i] = queenPopulation[Yrand][i];
+        }
+
+
+        // TODO: Make a selection function instead of random
+        reproduce(X, Y, i);
+        updatePopulation(sizeOfPop);
+        isFound(sizeOfPop);
 
     }
 }
@@ -253,16 +329,16 @@ void geneticHelper() {
     int numPopulation = (nqueens/2 + nqueens%2)*5;
     initiatePopulation(numPopulation);
     updateFitness(numPopulation);
-    if(isFound(numPopulation) == 0){
+    int run = 0;
+
+    while(isFound(numPopulation) == 0 && run<100000){
+        printf("Run %d:\n");
         geneticAlgorithm(numPopulation);
+        run++;
+        printf("\n");
     };
 }
 
-int* reproducePop(int* X, int* Y){
-    // TODO: pick random spot
-    // TODO: add before spot from X, after from Y
-    // TODO: return child
-}
 
 int main(int argc, char *argv[]) {
     int algorithm;
