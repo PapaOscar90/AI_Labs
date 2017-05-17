@@ -1,0 +1,9 @@
+Problem 3 - Genetic
+Chose a fitness function that increases the chance of selection based on how low it's fitness score is (conflicts). The formula is:
+((n*(n-1))/fitness)*10. This makes a rough percent chance based on the number of conflicts against the possible total conflicts.
+So lowest possible score could get a 100% chance of being selected. This allows very promising chromosomes to be selected quite often.
+No chromosome can be selected twice by passing in the last index selected. This would just make a child of the same chromosome and a cycle.
+
+The mutation is a 7% chance per queen per person to be changed to a random position. This had the best overall performance of the trials.
+
+Reproduce picks a random location to split the strings between X and Y. This could be improved possibly by giving the better fitted one more queens.
