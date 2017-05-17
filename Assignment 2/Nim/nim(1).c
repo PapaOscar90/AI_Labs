@@ -6,22 +6,30 @@
 
 #define INFINITY 9999999
 
+int recursiveBestMove;
+
+// TODO: Fix Everything. Crashes on run. Must be an infinite loop or trying to do something it shouldn't. I think maybe going below 1.
+
+// The state contains the N number and K = -1 loss / +1 win. A state's K is whether it will win/lose from that number.
 typedef struct State {
     int N;
     int K;
 } State;
 
-int minValue(int state); /* forward declaration: mutual recursion */
+// The following functions are from the OLD minimax algorithm that worked. Must implement these into a single recursive
+// NEGAMAX function.
+/*
+int minValue(int state);
 
 int maxValue(int state) {
     int move, max = -INFINITY;
-    /* terminal state ? */
+    // terminal state ?
     if (state == 1) {
-        return -1; /* Min wins if max is in a terminal state */
+        return -1; // Min wins if max is in a terminal state
     }
-    /* non-terminal state */
+    // non-terminal state
     for (move = 1; move <= 3; move++) {
-        if (state - move > 0) { /* legal move */
+        if (state - move > 0) { // legal move
             int m = minValue(state - move);
             if (m > max) max = m;
         }
@@ -31,13 +39,13 @@ int maxValue(int state) {
 
 int minValue(int state) {
     int move, min = INFINITY;
-    /* terminal state ? */
+    // terminal state ?
     if (state == 1) {
-        return 1; /* Max wins if min is in a terminal state */
+        return 1; // Max wins if min is in a terminal state
     }
-    /* non-terminal state */
+    // non-terminal state
     for (move = 1; move <= 3; move++) {
-        if (state - move > 0) { /* legal move */
+        if (state - move > 0) { // legal move
             int m = maxValue(state - move);
             if (m < min) min = m;
         }
@@ -50,7 +58,7 @@ int minimaxDecision(int state, int turn) {
     if (turn == MAX) {
         max = -INFINITY;
         for (move = 1; move <= 3; move++) {
-            if (state - move > 0) { /* legal move */
+            if (state - move > 0) { // legal move
                 int m = minValue(state - move);
                 if (m > max) {
                     max = m;
@@ -60,10 +68,10 @@ int minimaxDecision(int state, int turn) {
         }
         return bestmove;
     }
-    /* turn == MIN */
+    // turn == MIN
     min = INFINITY;
     for (move = 1; move <= 3; move++) {
-        if (state - move > 0) { /* legal move */
+        if (state - move > 0) { // legal move
             int m = maxValue(state - move);
             if (m < min) {
                 min = m;
@@ -73,6 +81,8 @@ int minimaxDecision(int state, int turn) {
     }
     return bestmove;
 }
+*/
+
 
 int negaMaxDecision(State state, int turn) {
     int result;
@@ -87,11 +97,12 @@ int negaMaxDecision(State state, int turn) {
         result = negaMaxDecision(state, turn++);
         if (v < result) {
             v = result;
+            recursiveBestMove=i; // Thought this would just trace back with the best moves until the last one, then return it
         }
         state.N = state.N +i;
     }
 
-    return v;
+    return recursiveBestMove;
 }
 
 void playNim(State state) {
@@ -116,7 +127,7 @@ int main(int argc, char *argv[]) {
 
     state.N = (atoi(argv[1]));
     state.K = 0;
-    playNim2(state);
+    playNim(state);
 
     return 0;
 }
