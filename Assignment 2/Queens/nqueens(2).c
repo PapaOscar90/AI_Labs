@@ -16,9 +16,9 @@
 int nqueens;      /* number of queens: global variable */
 int queens[MAXQ]; /* queen at (r,c) is represented by queens[r] == c */
 
-// TODO: FIX THE POPULATION, ISN"T CORRECT
-int queenPopulation[MAXQ][MAXQ];
-int newQueenPopulation[MAXQ][MAXQ];
+
+int queenPopulation[250][MAXQ];
+int newQueenPopulation[250][MAXQ];
 int fitnessOfPop[MAXQ];
 
 void initializeRandomGenerator() {
@@ -330,7 +330,7 @@ void geneticAlgorithm(int sizeOfPop) {
 
 void geneticHelper() {
     // make an even population so everybody can mate
-    int numPopulation = (nqueens / 2 + nqueens % 2) * 5;
+    int numPopulation = 15+(0.1*nqueens);
     initiatePopulation(numPopulation); //Makes chromosomes random
     updateFitness(nqueens); // Update fitness for initial check
     int run = 0;
