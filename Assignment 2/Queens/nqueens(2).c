@@ -255,7 +255,7 @@ void printXY(int* X, int* Y){
 void printNewPopulation(int sizeofpop){
     for (int i=0; i<sizeofpop; i++){
         for (int j=0; j<nqueens; j++) {
-            printf("%d,", queenPopulation[i][j]);
+            printf("%d,", newQueenPopulation[i][j]);
         }
         printf("\n");
     }
@@ -267,6 +267,23 @@ void printPopulation(int sizeofpop){
         }
         printf("\n");
     }
+}
+
+int getNextMate(int sizeofpop){
+  int index=0;
+  int max=0;
+  int chance = rand()%100;
+
+  for (int i=0; i< sizeofpop; i++){
+    if(fitnessOfPop[i] > max){
+      if (chance >= (100/fitnessOfPop[i])) {
+        max = fitnessOfPop[i];
+        index = i;
+      }
+    }
+  }
+
+  return index;
 }
 
 void reproduce(int* X,int* Y, int popNumber){
@@ -302,26 +319,39 @@ void updatePopulation(int sizeofpop){
     printPopulation(sizeofpop);
 }
 
+void printFitness(int sizeofpop){
+  printf("Fitness:  ");
+  for(int i=0; i<sizeofpop; i++){
+    printf("%d, ", fitnessOfPop[i]);
+  }
+  printf("\n");
+}
+
 void geneticAlgorithm(int sizeOfPop){
     int X[nqueens];
     int Y[nqueens];
 
-    for (int i=0; i<sizeOfPop; i++){
-        int Xrand = rand()%sizeOfPop;
-        int Yrand = rand()%sizeOfPop;
+  printf("Before reproduce:\n");
+  printNewPopulation(sizeOfPop);
+  for (int i=0; i<sizeOfPop; i++) {
+      printFitness(sizeOfPop);
+      int Xrand = getNextMate(sizeOfPop);
+      int Yrand = getNextMate(sizeOfPop);
 
-        for (int i = 0; i < nqueens; i++) {
-            X[i] = queenPopulation[Xrand][i];
-            Y[i] = queenPopulation[Yrand][i];
-        }
-
-
-        // TODO: Make a selection function instead of random
-        reproduce(X, Y, i);
-        updatePopulation(sizeOfPop);
-        isFound(sizeOfPop);
-
+      for (int j = 0; j < nqueens; j++) {
+        X[j] = queenPopulation[Xrand][j];
+        Y[j] = queenPopulation[Yrand][j];
+      }
+    reproduce(X, Y, i);
     }
+
+  // TODO: Make a selection function instead of random
+
+  printf("After reproduce:\n");
+  printNewPopulation(sizeOfPop);
+  updatePopulation(sizeOfPop);
+  updateFitness(sizeOfPop);
+  isFound(sizeOfPop);
 }
 
 void geneticHelper() {
@@ -331,8 +361,8 @@ void geneticHelper() {
     updateFitness(numPopulation);
     int run = 0;
 
-    while(isFound(numPopulation) == 0 && run<100000){
-        printf("Run %d:\n");
+    while(isFound(numPopulation) == 0 && run<3){
+        printf("Run %d:\n", run);
         geneticAlgorithm(numPopulation);
         run++;
         printf("\n");
@@ -342,7 +372,7 @@ void geneticHelper() {
 
 int main(int argc, char *argv[]) {
     int algorithm;
-
+    srand(time(NULL));
     do {
         printf("Number of queens (1<=nqueens<%d): ", MAXQ);
         scanf("%d", &nqueens);
