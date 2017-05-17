@@ -6,6 +6,7 @@
 #include <time.h>
 
 #define MAXQ 100
+#define RUNLIMIT 100000
 
 #define FALSE 0
 #define TRUE  1
@@ -39,10 +40,10 @@ void initiateQueens(int flag) {
     }
 }
 
-void initiatePopulation(int pop){
-    for (int i = 0; i<pop; i++){
-        for (int j = 0; j<nqueens; j++){
-            queenPopulation[i][j]=rand() % nqueens;
+void initiatePopulation(int pop) {
+    for (int i = 0; i < pop; i++) {
+        for (int j = 0; j < nqueens; j++) {
+            queenPopulation[i][j] = rand() % nqueens;
             //printf("%d, ", queenPopulation[i][j]);
         }
         //printf("\n");
@@ -213,160 +214,134 @@ void hillClimbing() {
 void simulatedAnnealing() {
     printf("Implement the routine simulatedAnnealing() yourself!!\n");
 }
+/*************************************************************/
 
-void updateFitness(int pop){
-    for(int i=0; i<pop; i++){
-        fitnessOfPop[i]=countConflictsInChrome(i);
-        //printf("Conflicts in %d: %d\n", i, fitnessOfPop[i]);
+void updateFitness(int pop) {
+    for (int i = 0; i < pop; i++) {
+        fitnessOfPop[i] = countConflictsInChrome(i);
     }
 }
 
-int isFound(int sizeOfPop){
-    int isFound=0, index=0;
-    for(int i=0; i<sizeOfPop; i++){
-        if(fitnessOfPop[i]==0){
-            isFound=1;
-            index=i;
+void printAnswer(int index, int run){
+    printf("\nFOUND ON RUN %d!\n", run);
+    for (int i = 0; i < nqueens; i++) {
+        printf("%d, ", queenPopulation[index][i]);
+    }
+}
+
+// true if person fits goal
+int isFound(int run) {
+    int isFound = 0, index = 0;
+    for (int i = 0; i < nqueens; i++) {
+        if (fitnessOfPop[i] == 0) {
+            isFound = 1;
+            index = i;
         }
     }
-
-    if (isFound==1){
-        for(int i=0; i<nqueens; i++){
-            printf("%d, ", queenPopulation[index][i]);
-        }
-        printf("\nFOUND!");
+    if (isFound == 1) {
+        printAnswer(index, run);
         return 1;
     }
-
     return 0;
 }
 
-void printXY(int* X, int* Y){
-    printf("X, then Y:\n");
-    for (int j = 0; j<nqueens; j++){
-        printf("%d, ", X[j]);
-    }
-    printf("\n");
-    for (int j = 0; j<nqueens; j++){
-        printf("%d, ", Y[j]);
-    }
-    printf("\n");
-}
-void printNewPopulation(int sizeofpop){
-    for (int i=0; i<sizeofpop; i++){
-        for (int j=0; j<nqueens; j++) {
-            printf("%d,", newQueenPopulation[i][j]);
+// Finds a possible chromosome for mating by chance porportional to its fintness. Smaller = better chance
+int getNextMate(int sizeofpop, int lastSelected) {
+    int index = nqueens-1;
+    int max = 0;
+    int i=0;
+
+    // Continue until it finds one to return
+    while(TRUE){
+        int chance = rand() % 100;
+        if (((nqueens*(nqueens-1))/fitnessOfPop[i])*10 >= chance && i != lastSelected) {
+            max = fitnessOfPop[i];
+            index = i;
+            return index;
         }
-        printf("\n");
-    }
-}
-void printPopulation(int sizeofpop){
-    for (int i=0; i<sizeofpop; i++){
-        for (int j=0; j<nqueens; j++) {
-            printf("%d,", queenPopulation[i][j]);
-        }
-        printf("\n");
+        i = (i+1)%nqueens;
     }
 }
 
-int getNextMate(int sizeofpop){
-  int index=0;
-  int max=0;
-  int chance = rand()%100;
-
-  for (int i=0; i< sizeofpop; i++){
-    if(fitnessOfPop[i] > max){
-      if (chance >= (100/fitnessOfPop[i])) {
-        max = fitnessOfPop[i];
-        index = i;
-      }
-    }
-  }
-
-  return index;
-}
-
-void reproduce(int* X,int* Y, int popNumber){
-    int position = rand()%nqueens;
+// Reproduces two chromosomes at a random splice point
+void reproduce(int *X, int *Y, int popNumber) {
+    int position = rand() % nqueens;
     int child[nqueens];
-
-    for (int i=0; i<position; i++){
+    for (int i = 0; i < position; i++) {
         child[i] = X[i];
     }
-
-    for (int i=position; i<nqueens; i++){
+    for (int i = position; i < nqueens; i++) {
         child[i] = Y[i];
     }
-
-    for (int i=0; i<nqueens; i++) {
+    for (int i = 0; i < nqueens; i++) {
         newQueenPopulation[popNumber][i] = child[i];
     }
-
 }
 
-void updatePopulation(int sizeofpop){
-    printf("New Population:\n");
-    printNewPopulation(sizeofpop);
-    printf("\n");
-    for (int i=0; i<sizeofpop; i++){
-        for (int j=0; j<nqueens; j++) {
-            queenPopulation[j][i] = newQueenPopulation[j][i];
-            newQueenPopulation[j][i]=0;
+// Updates the population with the new population. Directly copies and resets new to 0's
+void updatePopulation(int sizeofpop) {
+    for (int i = 0; i < sizeofpop; i++) {
+        for (int j = 0; j < nqueens; j++) {
+            queenPopulation[i][j] = newQueenPopulation[i][j];
+            newQueenPopulation[i][j] = 0;
         }
     }
-
-    printf("Queen Population Updated:\n");
-    printPopulation(sizeofpop);
 }
 
-void printFitness(int sizeofpop){
-  printf("Fitness:  ");
-  for(int i=0; i<sizeofpop; i++){
-    printf("%d, ", fitnessOfPop[i]);
-  }
-  printf("\n");
+
+// Creates random mutations
+void mutate(int sizeofpop){
+    int probability = 10;
+    int chance;
+
+
+    for (int i=0; i<sizeofpop; i++){
+        for (int j=0; j<nqueens; j++){
+            chance = rand()%100;
+            if(chance<=probability){
+                queenPopulation[i][j]=rand()%nqueens;
+            }
+        }
+    }
 }
 
-void geneticAlgorithm(int sizeOfPop){
+// The main genetic algorithm
+void geneticAlgorithm(int sizeOfPop) {
     int X[nqueens];
     int Y[nqueens];
 
-  printf("Before reproduce:\n");
-  printNewPopulation(sizeOfPop);
-  for (int i=0; i<sizeOfPop; i++) {
-      printFitness(sizeOfPop);
-      int Xrand = getNextMate(sizeOfPop);
-      int Yrand = getNextMate(sizeOfPop);
+    // For each person, find two chromosome with fitness function, then reproduce into new population
+    for (int i = 0; i < sizeOfPop; i++) {
+        int Xrand = getNextMate(sizeOfPop,-1);
+        int Yrand = getNextMate(sizeOfPop,Xrand);
 
-      for (int j = 0; j < nqueens; j++) {
-        X[j] = queenPopulation[Xrand][j];
-        Y[j] = queenPopulation[Yrand][j];
-      }
-    reproduce(X, Y, i);
+        for (int j = 0; j < nqueens; j++) {
+            X[j] = queenPopulation[Xrand][j];
+            Y[j] = queenPopulation[Yrand][j];
+        }
+        reproduce(X, Y, i);
     }
 
-  // TODO: Make a selection function instead of random
-
-  printf("After reproduce:\n");
-  printNewPopulation(sizeOfPop);
-  updatePopulation(sizeOfPop);
-  updateFitness(sizeOfPop);
-  isFound(sizeOfPop);
+    // Update the population with new population and reset new back to 0's
+    updatePopulation(sizeOfPop);
+    mutate(sizeOfPop); // Cause random mutation(s) in each person
+    updateFitness(nqueens); // Update fitness for next round
 }
 
 void geneticHelper() {
     // make an even population so everybody can mate
-    int numPopulation = (nqueens/2 + nqueens%2)*5;
-    initiatePopulation(numPopulation);
-    updateFitness(numPopulation);
+    int numPopulation = (nqueens / 2 + nqueens % 2) * 5;
+    initiatePopulation(numPopulation); //Makes chromosomes random
+    updateFitness(nqueens); // Update fitness for initial check
     int run = 0;
 
-    while(isFound(numPopulation) == 0 && run<3){
-        printf("Run %d:\n", run);
+    // The main algorithm loop. Continues until found, our max run limit
+    while (isFound(run) == 0 && run < RUNLIMIT) {
         geneticAlgorithm(numPopulation);
         run++;
-        printf("\n");
     };
+    if(run == RUNLIMIT)
+        printf("Did Not Find - Run Limit!");
 }
 
 
