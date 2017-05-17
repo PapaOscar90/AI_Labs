@@ -291,7 +291,7 @@ void updatePopulation(int sizeofpop) {
 
 // Creates random mutations
 void mutate(int sizeofpop){
-    int probability = 10;
+    int probability = 7;
     int chance;
 
 
