@@ -6,9 +6,11 @@
 
 #define INFINITY 9999999
 
-int recursiveBestMove;
+int recursiveBestMove=3;
+int lookUpTable[100];
 
-// TODO: Fix Everything. Crashes on run. Must be an infinite loop or trying to do something it shouldn't. I think maybe going below 1.
+
+// TODO: Implement a lookup table, max size 100|
 
 // The following functions are from the OLD minimax algorithm that worked. Must implement these into a single recursive
 // NEGAMAX function.
@@ -81,7 +83,12 @@ int minimaxDecision(int state, int turn) {
 int negaMaxDecision(int state, int color) {
     int result;
 
+    if(lookUpTable[state] != 0){
+        return (lookUpTable[state]);
+    }
+
     if (state == 1) {
+        lookUpTable[state]=-1;
         return (-1 * color);
     }
 
@@ -95,13 +102,13 @@ int negaMaxDecision(int state, int color) {
             }
         }
     }
-
+    lookUpTable[state]=v;
     return v;
 }
 
 void playNim(int state) {
     int turn = 1;
-    while (state != 1) {
+    while (state > 1) {
         int action = negaMaxDecision(state, turn);
         printf("%d: %s takes %d\n", state,
                (turn == MAX ? "Max" : "Min"), recursiveBestMove);
