@@ -231,7 +231,7 @@ void hillClimbing() {
 	int iter = 0;
 	int maxSteps = 1000;
 	while (evaluateState() != optimum && iter != maxSteps){
-//		printf("iteration %d: evaluation=%d\n", iter++, evaluateState());
+		printf("iteration %d: evaluation=%d\n", iter++, evaluateState());
 		stateIndex = 0;
 		successorFound = 0;
 		for (int queen = 0; queen < nqueens; queen++){
@@ -266,11 +266,11 @@ void hillClimbing() {
 		}
 	}
     if (successorFound) {
-//        printf("Solved puzzle. ");
+        printf("Solved puzzle. ");
         successes++;
     }
-//    printf("Final state is");
- //   printState();
+    printf("Final state is");
+    printState();
 }
 
 /*************************************************************/
