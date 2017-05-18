@@ -91,9 +91,7 @@ int negaMaxDecision(int state, int color) {
             result = -1 * negaMaxDecision(state - i, -1 * color);
             if (v <= result) {
                 v = result;
-                if(color == 1 && v>0) {
-                    recursiveBestMove = i;// Thought this would just trace back with the best moves until the last one, then return it
-                }
+                recursiveBestMove = i;// Thought this would just trace back with the best moves until the last one, then return i
             }
         }
     }
