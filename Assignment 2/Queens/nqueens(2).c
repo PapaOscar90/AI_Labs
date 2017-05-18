@@ -6,6 +6,7 @@
 #include <time.h>
 
 #define MAXQ 100
+#define MAX_STATE_COUNT 10000
 #define RUNLIMIT 100000
 
 #define FALSE 0
@@ -20,6 +21,7 @@ int queens[MAXQ]; /* queen at (r,c) is represented by queens[r] == c */
 int queenPopulation[250][MAXQ];
 int newQueenPopulation[250][MAXQ];
 int fitnessOfPop[MAXQ];
+
 
 void initializeRandomGenerator() {
     /* this routine initializes the random generator. You are not
@@ -171,7 +173,7 @@ int evaluateState() {
     return (nqueens - 1) * nqueens / 2 - countConflicts();
 }
 
-/*************************************************************/
+/******************RANDOM SEARCH*******************************************/
 
 /* A very silly random search 'algorithm' */
 #define MAXITER 10000
@@ -203,10 +205,72 @@ void randomSearch() {
     printState();
 }
 
-/*************************************************************/
+/*********************HILLCLIMBING SEARCH****************************************/
+
+int nextBestStates[MAX_STATE_COUNT][MAXQ];
+
+void copyToStates(int stateIndex){
+	for (int i = 0; i < nqueens; i++){
+		nextBestStates[stateIndex][i] = queens[i];
+	}
+}
+
+void copyFromStates(int stateIndex){
+	for (int i = 0; i < nqueens; i++){
+		queens[i] = nextBestStates[stateIndex][i];
+	}
+}
+
+int successes = 0;
 
 void hillClimbing() {
-    printf("Implement the routine hillClimbing() yourself!!\n");
+	int optimum = (nqueens - 1) * nqueens / 2;
+	int bestH = evaluateState();
+	int stateIndex = 0;
+	int successorFound = 0;
+	int iter = 0;
+	int maxSteps = 1000;
+	while (evaluateState() != optimum && iter != maxSteps){
+//		printf("iteration %d: evaluation=%d\n", iter++, evaluateState());
+		stateIndex = 0;
+		successorFound = 0;
+		for (int queen = 0; queen < nqueens; queen++){
+			int originalColumn = queens[queen];
+			for (int column = 0; column < nqueens; column++){
+				if (canMoveTo(queen, column)){
+					moveQueen(queen, column);
+					if (iter<5){
+						//printState();
+						//printf("%d, %d\n", evaluateState(), stateIndex);
+					}
+					if (evaluateState() == bestH){
+						//successorFound = 1;
+						copyToStates(stateIndex);
+						stateIndex++;
+					} else if (evaluateState() > bestH){
+						successorFound = 1;
+						bestH = evaluateState();
+						stateIndex = 0;
+						copyToStates(stateIndex);
+						stateIndex++;
+					}
+				}
+			}
+			queens[queen] = originalColumn;
+		}
+		//printf("New State:\n");
+		//printState();
+		copyFromStates(rand() % stateIndex);
+		if (!successorFound){
+			break;
+		}
+	}
+    if (successorFound) {
+//        printf("Solved puzzle. ");
+        successes++;
+    }
+//    printf("Final state is");
+ //   printState();
 }
 
 /*************************************************************/
@@ -294,7 +358,6 @@ void mutate(int sizeofpop){
     int probability = 7;
     int chance;
 
-
     for (int i=0; i<sizeofpop; i++){
         for (int j=0; j<nqueens; j++){
             chance = rand()%100;
@@ -344,6 +407,14 @@ void geneticHelper() {
         printf("Did Not Find - Run Limit!");
 }
 
+void hillClimbingSuccessRateTester(int tests){
+	for (int i = 0; i < tests; i++){
+		hillClimbing();
+		initiateQueens(1);
+	}
+	printf("%d\n", successes);
+}
+	
 
 int main(int argc, char *argv[]) {
     int algorithm;
@@ -359,7 +430,7 @@ int main(int argc, char *argv[]) {
         scanf("%d", &algorithm);
     } while ((algorithm < 1) || (algorithm > 4));
 
-    if (algorithm == 1) {
+    if (algorithm == 1 || algorithm == 2) {
         initializeRandomGenerator();
         initiateQueens(1);
         printf("\nInitial state:");
@@ -371,7 +442,7 @@ int main(int argc, char *argv[]) {
             randomSearch();
             break;
         case 2:
-            hillClimbing();
+			hillClimbingSuccessRateTester(100);
             break;
         case 3:
             simulatedAnnealing();
