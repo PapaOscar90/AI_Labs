@@ -3,82 +3,10 @@
 
 #define MAX 1
 #define MIN -1
-
 #define INFINITY 9999999
 
 int recursiveBestMove=3;
 int lookUpTable[100];
-
-
-// TODO: Implement a lookup table, max size 100|
-
-// The following functions are from the OLD minimax algorithm that worked. Must implement these into a single recursive
-// NEGAMAX function.
-/*
-int minValue(int state);
-
-int maxValue(int state) {
-    int move, max = -INFINITY;
-    // terminal state ?
-    if (state == 1) {
-        return -1; // Min wins if max is in a terminal state
-    }
-    // non-terminal state
-    for (move = 1; move <= 3; move++) {
-        if (state - move > 0) { // legal move
-            int m = minValue(state - move);
-            if (m > max) max = m;
-        }
-    }
-    return max;
-}
-
-int minValue(int state) {
-    int move, min = INFINITY;
-    // terminal state ?
-    if (state == 1) {
-        return 1; // Max wins if min is in a terminal state
-    }
-    // non-terminal state
-    for (move = 1; move <= 3; move++) {
-        if (state - move > 0) { // legal move
-            int m = maxValue(state - move);
-            if (m < min) min = m;
-        }
-    }
-    return min;
-}
-
-int minimaxDecision(int state, int turn) {
-    int move, bestmove, max, min;
-    if (turn == MAX) {
-        max = -INFINITY;
-        for (move = 1; move <= 3; move++) {
-            if (state - move > 0) { // legal move
-                int m = minValue(state - move);
-                if (m > max) {
-                    max = m;
-                    bestmove = move;
-                }
-            }
-        }
-        return bestmove;
-    }
-    // turn == MIN
-    min = INFINITY;
-    for (move = 1; move <= 3; move++) {
-        if (state - move > 0) { // legal move
-            int m = maxValue(state - move);
-            if (m < min) {
-                min = m;
-                bestmove = move;
-            }
-        }
-    }
-    return bestmove;
-}
-*/
-
 
 int negaMaxDecision(int state, int color) {
     int result;
