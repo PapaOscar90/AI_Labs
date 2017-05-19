@@ -55,7 +55,7 @@ void initiatePopulation(int pop) {
 
 }
 
-/* returns TRUE if position (row0,column0) is in 
+/* returns TRUE if position (row0,column0) is in
  * conflict with (row1,column1), otherwise FALSE.
  */
 int inConflict(int row0, int column0, int row1, int column1) {
@@ -65,7 +65,7 @@ int inConflict(int row0, int column0, int row1, int column1) {
     return FALSE; /* no conflict */
 }
 
-/* returns TRUE if position (row,col) is in 
+/* returns TRUE if position (row,col) is in
  * conflict with any other queen on the board, otherwise FALSE.
  */
 int inConflictWithAnotherQueen(int row, int col) {
@@ -114,7 +114,7 @@ void moveQueen(int queen, int column) {
 }
 
 /* returns TRUE if queen can be moved to position
- * (queen,column). Note that this routine checks only that 
+ * (queen,column). Note that this routine checks only that
  * the values of queen and column are valid! It does not test
  * conflicts!
  */
