@@ -7,7 +7,7 @@
 
 #define MAXQ 100
 #define MAX_STATE_COUNT 10000
-#define RUNLIMIT 100000
+#define RUNLIMIT 1000000
 
 #define e 2.718281828
 
@@ -274,7 +274,7 @@ void hillClimbing() {
     printState();
 }
 
-/*************************************************************/
+/*********************SIMULATED ANNEALING SEARCH****************************************/
 
 float randomFloat(){
       float r = (float)rand()/(float)RAND_MAX;
@@ -286,14 +286,14 @@ double timeToTemperature(int t, double startingTemp){
 		return 0;
 	}
 	return startingTemp/pow(t, 0.5);
-}
+}	
 
 void simulatedAnnealing(double startingTemp) {
     int optimum = (nqueens - 1) * nqueens / 2;
     int previousH = evaluateState();
     int currentH;
     int t = 1;
-    float temp;
+    double temp;
     while(evaluateState() != optimum){
 		temp = timeToTemperature(t, startingTemp);
 		if (temp == 0){
@@ -329,7 +329,7 @@ void simulatedAnnealing(double startingTemp) {
 	printf("%d", evaluateState());
     printState();
 }
-/*************************************************************/
+/******************GENETIC SEARCH*******************************************/
 
 void updateFitness(int pop) {
     for (int i = 0; i < pop; i++) {
