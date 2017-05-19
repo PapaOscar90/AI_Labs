@@ -497,7 +497,10 @@ int main(int argc, char *argv[]) {
 			hillClimbing();
             break;
         case 3:
-            simulatedAnnealing();
+			printf("Pick the starting temperature: ");
+			int startingTemp;
+			scanf("%d", &startingTemp);
+            simulatedAnnealing(startingTemp);
             break;
         case 4:
             geneticHelper();
