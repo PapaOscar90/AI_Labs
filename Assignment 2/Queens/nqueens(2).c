@@ -281,7 +281,7 @@ float randomFloat(){
       return r;
 }
 
-double T(int t, double startingTemp){
+double timeToTemperature(int t, double startingTemp){
 	if (t > 10000000){
 		return 0;
 	}
@@ -295,7 +295,7 @@ void simulatedAnnealing(double startingTemp) {
     int t = 1;
     float temp;
     while(evaluateState() != optimum){
-		temp = T(t, temp);
+		temp = timeToTemperature(t, startingTemp);
 		if (temp == 0){
 			break;
 		}
@@ -498,8 +498,8 @@ int main(int argc, char *argv[]) {
             break;
         case 3:
 			printf("Pick the starting temperature: ");
-			int startingTemp;
-			scanf("%d", &startingTemp);
+			double startingTemp;
+			scanf("%lf", &startingTemp);
             simulatedAnnealing(startingTemp);
             break;
         case 4:
