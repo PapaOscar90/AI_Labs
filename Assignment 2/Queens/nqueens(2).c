@@ -369,7 +369,7 @@ int getNextMate(int sizeofpop, int lastSelected) {
     // Continue until it finds one to return
     while(TRUE){
         int chance = rand() % 100;
-        if (((nqueens*(nqueens-1))/fitnessOfPop[i])*10 >= chance && i != lastSelected) {
+        if (((nqueens*(nqueens-1))/fitnessOfPop[i]) >= chance && i != lastSelected) {
             max = fitnessOfPop[i];
             index = i;
             return index;
@@ -406,7 +406,7 @@ void updatePopulation(int sizeofpop) {
 
 // Creates random mutations
 void mutate(int sizeofpop){
-    int probability = 7;
+    int probability = 1;
     int chance;
 
     for (int i=0; i<sizeofpop; i++){
@@ -444,7 +444,7 @@ void geneticAlgorithm(int sizeOfPop) {
 
 void geneticHelper() {
     // make an even population so everybody can mate
-    int numPopulation = 15+(0.1*nqueens);
+    int numPopulation = 25+(0.1*nqueens);
     initiatePopulation(numPopulation); //Makes chromosomes random
     updateFitness(nqueens); // Update fitness for initial check
     int run = 0;
