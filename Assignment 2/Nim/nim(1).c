@@ -1,94 +1,71 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX 0
-#define MIN 1
-
+#define MAX 1
+#define MIN -1
 #define INFINITY 9999999
 
-int minValue(int state); /* forward declaration: mutual recursion */
+int recursiveBestMove;
+int beginingState;
+int lookUpTable[100];
 
-int maxValue(int state) {
-  int move, max = -INFINITY;
-  /* terminal state ? */
-  if (state == 1) {
-    return -1; /* Min wins if max is in a terminal state */
-  }
-  /* non-terminal state */
-  for (move = 1; move <= 3; move++) {
-    if (state - move > 0) { /* legal move */
-      int m = minValue(state - move);
-      if (m > max) max = m;
+int negaMaxDecision(int state, int color) {
+    int result;
+
+    if (state == 1) {
+        lookUpTable[state]=-1*color;
+        return (-1*color);
     }
-  }
-  return max;
-}
 
-int minValue(int state) {
-  int move, min = INFINITY;
-  /* terminal state ? */
-  if (state == 1) {
-    return 1; /* Max wins if min is in a terminal state */
-  } 
-  /* non-terminal state */  
-  for (move = 1; move <= 3; move++) {
-    if (state - move > 0) { /* legal move */
-      int m = maxValue(state - move);
-      if (m < min) min = m;
-    }
-  }
-  return min;
-}
 
-int minimaxDecision(int state, int turn) {
-  int move, bestmove, max, min;
-  if (turn == MAX) {
-    max = -INFINITY;
-    for (move = 1; move <= 3; move++) {
-      if (state - move > 0) { /* legal move */
-        int m = minValue(state - move);
-        if (m > max) {
-          max = m;
-          bestmove = move;
+    int v = -INFINITY;
+    for (int i = 1; i < 4; i++) {
+        if (state - i >=0) {
+            if (state - i == 0){
+                result = -1*color;
+            }else {
+                if (lookUpTable[state-i] !=0){
+                    result = color * lookUpTable[state-i];
+                }else {
+                    result = -1 * negaMaxDecision(state - i, -1 * color);
+                }
+            }
+            if (v <= result) {
+                if(beginingState == state) {
+                    recursiveBestMove = i;// Thought this would just trace back with the best moves until the last one, then return i
+                }
+                v = result;
+            }
         }
-      }
     }
-    return bestmove;
-  }
-  /* turn == MIN */
-  min = INFINITY;
-  for (move = 1; move <= 3; move++) {
-    if (state - move > 0) { /* legal move */
-      int m = maxValue(state - move);
-      if (m < min) {
-        min = m;
-        bestmove = move;
-      }
-    }
-  }
-  return bestmove;
+    lookUpTable[state]=v*color;
+    return v;
 }
 
 void playNim(int state) {
-  int turn = 0;
-  while (state != 1) {
-    int action = minimaxDecision(state, turn);
-    printf("%d: %s takes %d\n", state, 
-           (turn==MAX ? "Max" : "Min"), action);
-    state = state - action;
-    turn = 1 - turn;
-  }
-  printf("1: %s looses\n", (turn==MAX ? "Max" : "Min"));
+    int turn = 1;
+    while (state > 1) {
+        beginingState=state;
+        recursiveBestMove=1;
+        int action = negaMaxDecision(state, turn);
+        printf("%d: %s takes %d\n", state,
+               (turn == MAX ? "Max" : "Min"), recursiveBestMove);
+        state = state - recursiveBestMove;
+        turn = -1*turn;
+    }
+    printf("1: %s looses\n", (turn == MAX ? "Max" : "Min"));
 }
 
 int main(int argc, char *argv[]) {
-  if ((argc != 2) || (atoi(argv[1]) < 3)) {
-    fprintf(stderr, "Usage: %s <number of sticks>, where ", argv[0]);
-    fprintf(stderr, "<number of sticks> must be at least 3!\n");
-    return -1;
-  }
+    int state;
+    if ((argc != 2) || (atoi(argv[1]) < 3)) {
+        fprintf(stderr, "Usage: %s <number of sticks>, where ", argv[0]);
+        fprintf(stderr, "<number of sticks> must be at least 3!\n");
+        return -1;
+    }
 
-  playNim(atoi(argv[1]));
+    state = (atoi(argv[1]));
+    playNim(state);
 
-  return 0;
+    return 0;
 }

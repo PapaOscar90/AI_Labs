@@ -1,0 +1,50 @@
+Problem 3 - Genetic
+Chose a fitness function that increases the chance of selection based on how low it's fitness score is (conflicts). The formula is:
+((n*(n-1))/fitness)*10. This makes a rough percent chance based on the number of conflicts against the possible total conflicts.
+So lowest possible score could get a 100% chance of being selected. This allows very promising chromosomes to be selected quite often.
+No chromosome can be selected twice by passing in the last index selected. This would just make a child of the same chromosome and a cycle.
+
+The mutation is a 7% chance per queen per person to be changed to a random position. This had the best overall performance of the trials.
+
+Reproduce picks a random location to split the strings between X and Y. This could be improved possibly by giving the better fitted one more queens.
+
+
+problem 1.
+1. 100 tests were run on a few different queen numbers. At 4 queens, 47 successes were found. 
+	at 8 queens, 14 successes were found. At 16 queens,  3 successes were found. We can quickly see that this
+	algorithm does not usually find an answer (majority of the times it doesn't).
+	
+2. In situations where a local maximum has been reached, or a plateau/shoulder.	Progress is possible from a shoulder,
+	so implementing sideways movement (aka continuing to run the algorithm on the shoulder states until it may progress
+	higher) should be a viable tactic to increase the amount of solved states.
+
+3. From a pool of 100 tests per queen amount, here are the success rates after the implementation of the improved 
+	algorithm outlined above
+	
+	queens      	successes
+	
+	4				100
+	5				100
+	6				96
+	7				93
+	8				96
+	9				95
+	10				97
+	11				98
+	12				100
+	13				99
+	14				98
+	15				99
+	16				99
+	17				98
+	18				100
+	19				99
+	20				100
+	21				100
+	22 				100
+	23				100
+	24 				100
+	25              100
+	
+
+
