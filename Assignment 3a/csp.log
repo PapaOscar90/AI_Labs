@@ -1,0 +1,86 @@
+Accepted
+
+####################################################
+
+# Before init: 76 possible values and 1 * 76^1 combinations
+# Applying substitution for single-value domains 	  and checking applicable constraints:
+# After init: 76 possible values and 1 * 76^1 combinations
+# After init: domains
+X0: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75]
+Trying value 0 for variable X0.
+Trying value 1 for variable X0.
+Trying value 2 for variable X0.
+Trying value 3 for variable X0.
+Trying value 4 for variable X0.
+Trying value 5 for variable X0.
+Trying value 6 for variable X0.
+Trying value 7 for variable X0.
+Trying value 8 for variable X0.
+Trying value 9 for variable X0.
+Trying value 10 for variable X0.
+Trying value 11 for variable X0.
+Trying value 12 for variable X0.
+Trying value 13 for variable X0.
+Trying value 14 for variable X0.
+Trying value 15 for variable X0.
+Trying value 16 for variable X0.
+Trying value 17 for variable X0.
+Trying value 18 for variable X0.
+Trying value 19 for variable X0.
+Trying value 20 for variable X0.
+Trying value 21 for variable X0.
+Trying value 22 for variable X0.
+Trying value 23 for variable X0.
+Trying value 24 for variable X0.
+Trying value 25 for variable X0.
+Trying value 26 for variable X0.
+Trying value 27 for variable X0.
+Trying value 28 for variable X0.
+Trying value 29 for variable X0.
+Trying value 30 for variable X0.
+Trying value 31 for variable X0.
+Trying value 32 for variable X0.
+Trying value 33 for variable X0.
+Trying value 34 for variable X0.
+Trying value 35 for variable X0.
+Trying value 36 for variable X0.
+Trying value 37 for variable X0.
+Trying value 38 for variable X0.
+Trying value 39 for variable X0.
+Trying value 40 for variable X0.
+Trying value 41 for variable X0.
+Trying value 42 for variable X0.
+Trying value 43 for variable X0.
+Trying value 44 for variable X0.
+Trying value 45 for variable X0.
+Trying value 46 for variable X0.
+Trying value 47 for variable X0.
+Trying value 48 for variable X0.
+Trying value 49 for variable X0.
+Trying value 50 for variable X0.
+Trying value 51 for variable X0.
+Trying value 52 for variable X0.
+Trying value 53 for variable X0.
+Trying value 54 for variable X0.
+Trying value 55 for variable X0.
+Trying value 56 for variable X0.
+Trying value 57 for variable X0.
+Trying value 58 for variable X0.
+Trying value 59 for variable X0.
+Trying value 60 for variable X0.
+Trying value 61 for variable X0.
+Trying value 62 for variable X0.
+Trying value 63 for variable X0.
+Trying value 64 for variable X0.
+Trying value 65 for variable X0.
+Trying value 66 for variable X0.
+Trying value 67 for variable X0.
+Trying value 68 for variable X0.
+Trying value 69 for variable X0.
+Trying value 70 for variable X0.
+Trying value 71 for variable X0.
+Trying value 72 for variable X0.
+Trying value 73 for variable X0.
+Trying value 74 for variable X0.
+Trying value 75 for variable X0.
+backtracking points: 39
