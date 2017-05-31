@@ -1,15 +1,21 @@
 #The set of variables of the CSP
 variables:
-	A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z : integer;
+	S,E,N,D,M,O,R,Y,x1,x2,x3,x4 : integer;
 
 #Here the domains are defined
 domains:
-	A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z <- [0 .. 9];
+	S,E,N,D,M,O,R,Y <- [0 .. 9];
+	x1,x2,x3,x4 <- [0,1];
 
 
 #Here are the constraints:
 constraints:
-	((1000*S)+(100*E)+(10*N)+(D))+((1000*M)+(100*O)+(10*R)+(E)) = ((10000*M)+(1000*O)+(100*N)+(10*E)+(Y));
+	alldiff(S,E,N,D,M,O,R,Y);
+	D + E = Y + (10*x1);
+	x1 + N + R = E + (10*x2);
+	x2 + E + O = N + (10*x3);
+	x3 + S + M = O + (10*x4);
+	M = x4;
 	
 
 
