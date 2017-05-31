@@ -7,7 +7,7 @@
 {\s17\sbasedon16\snext17\sl288\slmult1\sb0\sa140\dbch\af7 List;}
 {\s18\sbasedon0\snext18\sb120\sa120\noline\i\dbch\af7\afs24\ai\fs24 Caption;}
 {\s19\sbasedon0\snext19\noline\dbch\af7 Index;}
-}{\*\generator LibreOffice/5.3.1.2$Linux_X86_64 LibreOffice_project/30m0$Build-2}{\info{\creatim\yr2017\mo5\dy28\hr19\min17}{\revtim\yr2017\mo5\dy29\hr9\min59}{\printim\yr0\mo0\dy0\hr0\min0}}{\*\userprops}\deftab709
+}{\*\generator LibreOffice/5.3.1.2$Linux_X86_64 LibreOffice_project/30m0$Build-2}{\info{\creatim\yr2017\mo5\dy28\hr19\min17}{\revtim\yr2017\mo5\dy31\hr22\min16}{\printim\yr0\mo0\dy0\hr0\min0}}{\*\userprops}\deftab709
 \viewscale100
 {\*\pgdsctbl
 {\pgdsc0\pgdscuse451\pgwsxn11906\pghsxn16838\marglsxn1134\margrsxn1134\margtsxn1134\margbsxn1134\pgdscnxt0 Default Style;}}
@@ -186,6 +186,79 @@ Number of solutions: 2}
 
 \par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
 5.}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+#The set of variables of the CSP}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+variables:}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+\tab S,E,N,D,M,O,R,Y,x1,x2,x3,x4 : integer;}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033\rtlch \ltrch\loch
+
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+#Here the domains are defined}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+domains:}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+\tab S,E,N,D,M,O,R,Y <- [0 .. 9];}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+\tab x1,x2,x3,x4 <- [0,1];}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033\rtlch \ltrch\loch
+
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033\rtlch \ltrch\loch
+
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+#Here are the constraints:}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+constraints:}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+\tab alldiff(S,E,N,D,M,O,R,Y);}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+\tab D + E = Y + (10*x1);}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+\tab x1 + N + R = E + (10*x2);}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+\tab x2 + E + O = N + (10*x3);}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+\tab x3 + S + M = O + (10*x4);}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+\tab M = x4;}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+\tab }
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033\rtlch \ltrch\loch
+
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033\rtlch \ltrch\loch
+
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+# Here you can specify in how many solutions}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+# you are interested (all, 1, 2, 3, ...)  }
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+solutions: all}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033\rtlch \ltrch\loch
+
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+Finds 25 solutions. 25}{\super\rtlch \ltrch\loch
+th}{\rtlch \ltrch\loch
+ is the answer from pdf. }
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+Answers to solution in order:}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+- }{\rtlch \ltrch\loch
+(6 numbers) }{\rtlch \ltrch\loch
+No solutions to first one. }{\rtlch \ltrch\loch
+3119 states visited}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+- }{\rtlch \ltrch\loch
+(10 numbers)}{\rtlch \ltrch\loch
+No solutions either? }{\rtlch \ltrch\loch
+6966055 states visited}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+- }{\rtlch \ltrch\loch
+(8 numbers) No solutions. 6225 states visited}
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033\rtlch \ltrch\loch
+
+\par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033{\rtlch \ltrch\loch
+6.}
 \par \pard\plain \s0\widctlpar\hyphpar0\aspalpha\ltrpar\cf0\kerning1\dbch\af5\langfe2052\dbch\af6\afs24\alang1081\loch\f3\hich\af3\fs24\lang1033\rtlch \ltrch\loch
 
 \par }
