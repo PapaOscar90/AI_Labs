@@ -1,15 +1,16 @@
 #The set of variables of the CSP
 variables:
-	A, B : integer;
+	A[76] : integer;
 
 #Here the domains are defined
 domains:
-	A, B <-[0 .. 75];
+	A <- [1..75];
 
 
 #Here are the constraints:
 constraints:
-	A mod 2 <> 0;
+	forall (i in [1..75]) forall (j in [1..75])A[i] mod A[j] = 0; A[i] <> A[j];end end
+	
 	
 
 
