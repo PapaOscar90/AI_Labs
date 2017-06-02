@@ -1,15 +1,20 @@
 #The set of variables of the CSP
 variables:
-	A, B : integer;
+	Q[10] : integer;
 
 #Here the domains are defined
 domains:
-	A, B <-[0 .. 75];
+	Q <-[0 .. 9];
 
 
 #Here are the constraints:
 constraints:
-	A mod 2 <> 0;
+	alldiff(Q);
+	forall(i in [0 ..9])
+		forall (j in [0 .. 9])
+			any(i=j, abs(i-j) <> abs(Q[i]-Q[j]));
+		end
+	end
 	
 
 
