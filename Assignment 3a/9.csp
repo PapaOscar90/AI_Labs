@@ -1,16 +1,26 @@
 #The set of variables of the CSP
 variables:
-	A, B : integer;
+	S[4][4] : integer;
 
 #Here the domains are defined
 domains:
-	A, B <-[0 .. 75];
+	S <-[1 .. 16];
 
 
 #Here are the constraints:
 constraints:
-	A mod 2 <> 0;
-	
+	alldiff(S);
+	forall ( i in [0 .. 3])
+		forall ( j in [0 .. 3])
+			sum(S[i]) = 34;
+			sum(S[0][0],S[1][1],S[2][2],S[3][3]) = 34;
+			sum(S[0][i],S[1][i],S[2][i],S[3][i]) = 34;
+			any(i=j, sum(S[0][i],S[1][i],S[2][i],S[3][i]) = sum(S[0][j],S[1][j],S[2][j],S[3][j]));
+			sum(S[0][0],S[1][1],S[2][2],S[3][3]) = sum(S[0][3],S[1][2],S[2][1],S[3][0]);
+		end
+	end
+
+
 
 
 # Here you can specify in how many solutions
