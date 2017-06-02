@@ -16,6 +16,8 @@ constraints:
 	x2 + E + O = N + (10*x3);
 	x3 + S + M = O + (10*x4);
 	M = x4;
+	S<>0;
+	M<>0;
 	
 
 
