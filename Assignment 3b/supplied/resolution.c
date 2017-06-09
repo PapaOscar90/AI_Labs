@@ -304,7 +304,7 @@ void printProof(clauseSet s) {
   idx = findIndexOfClause(empty, s);
   recursivePrintProof(idx, s);
 }
-	       
+
 int main(int argc, char *argv[]) {
   clauseSet kb;
   init(&kb);

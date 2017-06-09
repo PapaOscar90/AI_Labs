@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 
 #define MAXKBSIZE          1024
 #define MAXIDENTIFIERS     1024
@@ -375,12 +376,19 @@ void evaluateRandomModel(int modelSize) {
 /*** You should not need to change any code above this line ****/
 
 int checkAllModels(int modelSize) {
-  /* return 1 if KB entails INFER, otherwise 0 */
-  inferred = 1;
-  printf("THE FUNCTION checkAllModels IS NOT IMPLEMENTED YET\n");
-  printf("PLEASE IMPLEMENT IT YOURSELF!\n");
-  printf("THIS FUNCTION CURRENTLY ALWAYS RETURNS 1.\n\n");
-  return inferred;
+	for (int i = 0; i < pow(2,modelSize); i++){
+		int checkInt = i;
+		for (int j = 0; j < modelSize; j++){
+			model[j] = 1 & checkInt;
+			checkInt /= 2;
+		}
+		if (evaluateExpressionSet(kbSize, kb) && !evaluateExpressionSet(inferSize, infer)){
+			printf("Counter example found : ");
+			showModel(modelSize);
+			return 0;
+		}
+	}
+	return 1;
 }
 
 
@@ -392,14 +400,12 @@ int main(int argc, char *argv[]) {
   showExpSet("INFER", inferSize, infer);
   printf("\n");
 
-  evaluateRandomModel(cntidents);
-
-  printf("\n");
   if (checkAllModels(cntidents)) {
     printf("KB entails INFER\n");
   } else {
     printf("KB does not entail INFER\n");
   }
+  printf("\n");
 
   return 0;
 }
